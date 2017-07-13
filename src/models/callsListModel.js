@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const CallsScheme = new Schema({
   contact: { type: "ObjectId", ref: 'Contacts' },
-  call: Array
+  history: Array
 });
 
 module.exports = mongoose.model('Calls', CallsScheme);

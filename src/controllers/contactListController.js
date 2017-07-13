@@ -13,18 +13,14 @@ exports.getContacts = function(req, res) {
 };
 
 exports.createContact = function(req, res) {
-  let contact = Object.assign({}, req.body);
-  contact.history = undefined;
-
-  const histories = req.body.history;
-
   Contacts.create(req.body, function(err, contacts) {
     if (err) {
       res.send(err);
     }
-    histories.forEach(h => {
-      h.contact = contacts;
-      Calls.create(h, (err, res) => {})
+    Calls.create({contact: contacts, history: req.body.history}, function(err, res) {
+      if (err) {
+        res.send(err);
+      }
     });
     res.json(contacts);
   });
