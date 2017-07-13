@@ -1,16 +1,17 @@
 const express = require('express');
-const StartModel = require('./start-model');
-
 const app = express();
+const mongoose = require('mongoose');
+const Contacts = require('./models/contactListModel');
+const Calls = require('./models/callsListModel');
+const bodyParser = require('body-parser');
+const config = require('./config');
+const routes = require('./routes/contactListRoutes');
 
-app.get('/api/start', function (req, res) {
-    StartModel.find({}, function (err, docs) {
-        res.send({
-            api: true,
-            docs: docs
-        })
-    });
-});
+mongoose.connect(config.mongodb.uri);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+routes(app);
 
 module.exports = app;
-
