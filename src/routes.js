@@ -1,5 +1,5 @@
 module.exports = function(app) {
-  const contactList = require('../controllers/contactListController');
+  const contactList = require('./controller');
 
   app.route('/contacts')
     .get(contactList.getContacts)
@@ -10,6 +10,6 @@ module.exports = function(app) {
     .put(contactList.updateContact)
     .delete(contactList.deleteContact);
 
-  app.route('/contacts/:contactId/calls')
-    .get(contactList.getCalls)
+  app.route('/contacts/:contactId/history')
+    .get(contactList.getHistory)
 };
