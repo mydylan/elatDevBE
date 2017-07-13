@@ -23,7 +23,7 @@ exports.createContact = function(req, res) {
       res.send(err);
     }
     histories.forEach(h => {
-      h._contact = contacts;
+      h.contact = contacts;
       Calls.create(h, (err, res) => {})
     });
     res.json(contacts);
@@ -49,7 +49,7 @@ exports.deleteContact = function(req, res) {
 };
 
 exports.getCalls = function(req, res) {
-  Calls.find({"_contact": new ObjectId(req.params.contactId)}, function(err, calls) {
+  Calls.find({"contact": new ObjectId(req.params.contactId)}, function(err, calls) {
     if (err) {
       res.send(err);
     }
