@@ -12,6 +12,15 @@ exports.getContacts = function(req, res) {
   });
 };
 
+exports.readContact = function(req, res) {
+  Contacts.findById(req.params.contactId, function(err, contacts) {
+    if (err) {
+      res.send(err);
+    }
+    res.json(contacts);
+  });
+};
+
 exports.createContact = function(req, res) {
   Contacts.create(req.body, function(err, contacts) {
     if (err) {
@@ -31,6 +40,11 @@ exports.updateContact = function(req, res) {
     if (err) {
       res.send(err);
     }
+    Calls.findOneAndUpdate({"contact": new ObjectId(req.params.contactId)}, {$push: {"history": {"$each": req.body.history}}}, { new: true }, function(err, contacts) {
+      if (err) {
+        res.send(err);
+      }
+    });
     res.json(contacts);
   });
 };
@@ -40,6 +54,11 @@ exports.deleteContact = function(req, res) {
     if (err) {
       res.send(err);
     }
+    Calls.remove({"contact": new ObjectId(req.params.contactId)}, function(err, contacts) {
+      if (err) {
+        res.send(err);
+      }
+    })
     res.json({ message: 'Contact successfully deleted' });
   });
 };
