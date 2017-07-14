@@ -7,6 +7,7 @@ const History = require('./models/History');
 const config = require('./config');
 const routes = require('./routes');
 
+mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodb.uri);
 
 app.use(bodyParser.urlencoded({ extended: true }));
