@@ -5,14 +5,8 @@ const History = mongoose.model('History');
 
 const _sendError = (err, res) => err && res.send(err);
 
-const valueToNumber = (obj) => {
-  let result = {};
-  Object.keys(obj).forEach(key => result[key] = Number(obj[key]));
-  return result;
-}
-
 exports.getContacts = (req, res) => {
-  Contact.paginate({}, valueToNumber(req.query), (err, contacts) => {
+  Contact.find({}, (err, contacts) => {
     _sendError(err, res);
     res.json(contacts);
   });
