@@ -23,7 +23,9 @@ exports.createContact = (req, res) => {
   Contact.create(req.body, (err, contacts) => {
     _sendError(err, res);
     const history = { contact: contacts, history: req.body.history };
-    History.create(history, _sendError)
+    History.create(history, (err, history) => {
+      _sendError(err, res);
+    });
     res.json(contacts);
   });
 };
@@ -37,7 +39,9 @@ exports.updateContact = (req, res) => {
         { contact: new ObjectId(req.params.contactId) },
         { $push: { history: { $each: req.body.history } } },
         { new: true },
-        _sendError
+        (err, history) => {
+          _sendError(err, res);
+        }
       );
       res.json(contacts);
     }
@@ -47,7 +51,9 @@ exports.updateContact = (req, res) => {
 exports.deleteContact = (req, res) => {
   Contact.remove({ _id: req.params.contactId }, (err, contacts) => {
     _sendError(err, res);
-    History.remove({ contact: new ObjectId(req.params.contactId) }, _sendError)
+    History.remove({ contact: new ObjectId(req.params.contactId) }, (err, history) => {
+      _sendError(err, res);
+    });
     res.json({ message: 'Contact successfully deleted' });
   });
 };
